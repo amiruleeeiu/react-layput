@@ -25,7 +25,7 @@ function Sidebar() {
       display={{ base: "none", md: "block" }}
       boxShadow="md"
     >
-      <Box as="ul" listStyleType="none" py={2}>
+      <Box as="ul" listStyleType="none">
         {NAVLINK.map(({ path, text, icon: Icon }, index) => (
           <Box as="li" key={index} py={1}>
             <Box as={NavLink} to={path}>
