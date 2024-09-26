@@ -1,18 +1,19 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { BrowserRouter } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import "./App.css";
 import Layout from "./Layout/Layout";
-import MainContent from "./Layout/MainContent";
+import { routesConfig } from "./routes/routesConfig";
+import { transformRoutesWithRole } from "./routes/transformRoutesWithRole";
 
 function App() {
+  const transformedRoutes = transformRoutesWithRole(routesConfig);
+
+  // Use the transformed routes with useRoutes
+  const element = useRoutes(transformedRoutes);
   return (
-    <BrowserRouter>
-      <ChakraProvider>
-        <Layout>
-          <MainContent />
-        </Layout>
-      </ChakraProvider>
-    </BrowserRouter>
+    <ChakraProvider>
+      <Layout>{element}</Layout>
+    </ChakraProvider>
   );
 }
 

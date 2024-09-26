@@ -4,17 +4,16 @@ import { BiMessage } from "react-icons/bi";
 import { CgProductHunt } from "react-icons/cg";
 import { GrOrderedList } from "react-icons/gr";
 import { MdDashboard } from "react-icons/md";
-import { RxActivityLog } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
 
 function Sidebar() {
   const NAVLINK = [
     { path: "/", text: "Dashboard", icon: MdDashboard },
-    { path: "/product", text: "Product", icon: CgProductHunt },
-    { path: "/messages", text: "Mesaages", icon: BiMessage },
-    { path: "/calender", text: "Calender", icon: CalendarIcon },
-    { path: "/order", text: "Order", icon: GrOrderedList },
-    { path: "/activity", text: "Activity", icon: RxActivityLog },
+    { path: "/routing", text: "Routing", icon: CgProductHunt },
+    { path: "/form", text: "Form", icon: CgProductHunt },
+    { path: "/table", text: "Table", icon: BiMessage },
+    { path: "/input", text: "Input", icon: CalendarIcon },
+    { path: "/tinymce", text: "Tinymce", icon: GrOrderedList },
   ];
   return (
     <Box

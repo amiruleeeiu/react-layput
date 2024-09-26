@@ -1,9 +1,15 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, useDisclosure } from "@chakra-ui/react";
+import { useEffect } from "react";
 import MobileSidebar from "./MobileSidebar";
 
 function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    // setCounter2(counter2 + 1);
+  }, []);
+
   return (
     <Box
       as="header"
@@ -25,13 +31,12 @@ function Header() {
             icon={<HamburgerIcon boxSize="5" />}
             onClick={onOpen}
           />
-          <Box>Header Content</Box>
-          <Box>Header Content</Box>
+          <Box></Box>
+          <Flex gap={2}></Flex>
         </Flex>
       </Box>
       <MobileSidebar onClose={onClose} isOpen={isOpen} />
     </Box>
   );
 }
-
 export default Header;
