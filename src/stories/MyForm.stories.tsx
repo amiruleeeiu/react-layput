@@ -13,14 +13,14 @@ export default {
   ],
   component: MyForm,
   argTypes: {
-    onSubmit: { action: "submit" }, // Log the submit action
+    onSubmit: { action: "submit" },
   },
 } as Meta;
 
 const Template: StoryFn<MyFormProps> = (args) => <MyForm {...args} />;
 
 export const DefaultForm = Template.bind({});
-DefaultForm.args = {}; // No initial values, default behavior
+DefaultForm.args = {};
 
 export const InvalidForm = Template.bind({});
 InvalidForm.args = {
@@ -28,6 +28,13 @@ InvalidForm.args = {
     name: "John Doe",
     email: "invalid-email",
     gender: "male",
+    isNrb: "false",
+    nid: "",
+    passport: "",
+    divisionId: "1",
+    districtId: "",
+    thanaId: "",
+    address: "",
   },
 };
 
@@ -37,5 +44,12 @@ PrefilledForm.args = {
     name: "John Doe",
     email: "johndoe@example.com",
     gender: "male",
+    isNrb: "false",
+    nid: "345353",
+    passport: "2342342",
+    divisionId: "1",
+    districtId: "2",
+    thanaId: "2",
+    address: "Meherpur sadar",
   },
 };
