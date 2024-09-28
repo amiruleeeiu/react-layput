@@ -46,6 +46,7 @@ const InputField: React.FC<InputFieldProps> = ({
                 }
 
                 const { value } = event.target;
+                console.log("input field");
 
                 if (
                   type === "number" &&

@@ -15,6 +15,7 @@ export interface User {
   thanaId: string;
   address: string;
   divisionId: string;
+  skills: string[];
 }
 
 export interface MyFormProps {
@@ -35,6 +36,7 @@ const MyForm: React.FC<MyFormProps> = ({
     districtId: "",
     thanaId: "",
     address: "",
+    skills: [],
   },
 }) => {
   return (
@@ -148,10 +150,7 @@ const MyForm: React.FC<MyFormProps> = ({
                 { label: "Khulna", value: "2" },
                 { label: "Rajshahi", value: "3" },
               ]}
-              clearFields={[
-                { name: "districtId", value: "" },
-                { name: "thanaId", value: "" },
-              ]}
+              clearFields={["districtId", "thanaId"]}
             />
 
             <Autocomplete
@@ -163,6 +162,7 @@ const MyForm: React.FC<MyFormProps> = ({
                 { label: "Kushtia", value: "2" },
                 { label: "Meherpur", value: "3" },
               ]}
+              //  isLoading={values.divisionId ? true : false}
               isDisabled={!values.divisionId}
               clearFields={[{ name: "thanaId", value: "" }]}
               col={6}
@@ -177,9 +177,19 @@ const MyForm: React.FC<MyFormProps> = ({
                 { label: "Gangni", value: "2" },
                 { label: "Meherpur Sadar", value: "3" },
               ]}
-              clearFields={[{ name: "thanaId", value: "" }]}
               isDisabled={!values.districtId}
               col={6}
+            />
+            <Autocomplete
+              placeholder="Select Skill"
+              name="skills"
+              label="Skill"
+              options={[
+                { label: "React", value: "1" },
+                { label: "Angular", value: "2" },
+                { label: "Vue", value: "3" },
+              ]}
+              isMulti
             />
 
             <InputField name="address" label="Address" placeholder="Address" />

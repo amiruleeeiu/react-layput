@@ -38,6 +38,8 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
             form.setFieldValue(name, value);
           };
 
+          console.log("radio field");
+
           return (
             <FormControl isInvalid={!!meta.error && meta.touched}>
               <FormLabel htmlFor={name}>{label}</FormLabel>

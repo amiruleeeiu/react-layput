@@ -35,6 +35,7 @@ InvalidForm.args = {
     districtId: "",
     thanaId: "",
     address: "",
+    skills: ["1", "3"],
   },
 };
 
@@ -51,5 +52,6 @@ PrefilledForm.args = {
     districtId: "2",
     thanaId: "2",
     address: "Meherpur sadar",
+    skills: ["1", "3"],
   },
 };
