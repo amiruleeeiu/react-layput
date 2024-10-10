@@ -5,9 +5,9 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { Field, FieldProps } from "formik";
-import Select from "react-select";
+import Select, { MultiValue, SingleValue } from "react-select";
 
-interface AutocompleteProps {
+export interface AutocompleteProps {
   name: string;
   label: string;
   options: { value: string; label: string }[];
@@ -37,13 +37,23 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
       {isVisible && (
         <Field name={name}>
           {({ field, form, meta }: FieldProps) => {
+            const clearFieldsFn = () => {
+              clearFields.forEach((fieldToClear) => {
+                const fieldProps = form.getFieldProps(
+                  typeof fieldToClear === "string"
+                    ? fieldToClear
+                    : fieldToClear.name
+                );
+                if (fieldProps) {
+                  form.setFieldValue(fieldProps.name, "");
+                }
+              });
+            };
             const handleSelectChange = (
               selectedOption:
-                | { value: string; label: string }
-                | { value: string; label: string }[]
-                | null
+                | MultiValue<{ value: string; label: string } | undefined>
+                | SingleValue<{ value: string; label: string } | undefined>
             ) => {
-              console.log(selectedOption);
               if (selectedOption) {
                 if (Array.isArray(selectedOption)) {
                   // multi select case
@@ -51,21 +61,13 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                     name,
                     selectedOption.map((option) => option.value)
                   );
-                } else {
+                } else if (selectedOption && "value" in selectedOption) {
                   // single select case
                   form.setFieldValue(name, selectedOption.value);
+                  clearFieldsFn();
                 }
               } else {
-                clearFields.forEach((fieldToClear) => {
-                  const fieldProps = form.getFieldProps(
-                    typeof fieldToClear === "string"
-                      ? fieldToClear
-                      : fieldToClear.name
-                  );
-                  if (fieldProps) {
-                    form.setFieldValue(fieldProps.name, "");
-                  }
-                });
+                clearFieldsFn();
                 if (isMulti) {
                   form.setFieldValue(name, []);
                 } else {
@@ -74,18 +76,20 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               }
             };
 
-            console.log("autocomplete field");
+            console.log("autocomplete");
 
             return (
               <FormControl isInvalid={!!meta.error && meta.touched}>
                 <FormLabel htmlFor={name}>{label}</FormLabel>
                 <Select
                   value={
-                    typeof field.value === "string"
-                      ? options.find((option) => option.value === field.value)
-                      : field.value.map((i: string) =>
+                    Array.isArray(field.value)
+                      ? field.value.map((i: string) =>
                           options.find((option) => option.value === i)
-                        ) || null
+                        )
+                      : field.value === ""
+                      ? null
+                      : options.find((option) => option.value === field.value)
                   }
                   onChange={handleSelectChange}
                   isLoading={isLoading}

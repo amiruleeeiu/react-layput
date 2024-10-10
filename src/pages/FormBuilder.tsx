@@ -1,6 +1,8 @@
 import { Button, Flex, Grid } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import Autocomplete from "../components/formik/Autocomplete";
+import Autocomplete from "../components/formik/Autocomplete/Autocomplete";
+import DatePickerField from "../components/formik/DatePickerField/DatePickerField";
+import EditorField from "../components/formik/EditorField";
 import RadioButtonGroup from "../components/formik/FormRadioGroup";
 import InputField from "../components/formik/InputField";
 
@@ -8,6 +10,7 @@ export interface User {
   name: string;
   email: string;
   gender: string;
+  birthDate: string;
   isNrb: string;
   nid: string;
   passport: string;
@@ -15,6 +18,7 @@ export interface User {
   thanaId: string;
   address: string;
   divisionId: string;
+  about: string;
   skills: string[];
 }
 
@@ -29,6 +33,7 @@ const MyForm: React.FC<MyFormProps> = ({
     name: "",
     email: "",
     gender: "",
+    birthDate: "",
     isNrb: "false",
     nid: "",
     passport: "",
@@ -36,6 +41,7 @@ const MyForm: React.FC<MyFormProps> = ({
     districtId: "",
     thanaId: "",
     address: "",
+    about: "",
     skills: [],
   },
 }) => {
@@ -47,12 +53,14 @@ const MyForm: React.FC<MyFormProps> = ({
           name?: string;
           email?: string;
           gender?: string;
+          birthDate?: string;
           nid?: string;
           passport?: string;
           divisionId?: string;
           districtId?: string;
           thanaId?: string;
           address?: string;
+          about?: string;
         } = {};
 
         if (!values.name) {
@@ -64,6 +72,9 @@ const MyForm: React.FC<MyFormProps> = ({
         }
         if (!values.gender) {
           errors.gender = "Gender is Required";
+        }
+        if (!values.birthDate) {
+          errors.birthDate = "Birth date is Required";
         }
         if (!values.divisionId) {
           errors.divisionId = "Division is Required";
@@ -79,6 +90,9 @@ const MyForm: React.FC<MyFormProps> = ({
         }
         if (!values.address) {
           errors.address = "Address is Required";
+        }
+        if (!values.about) {
+          errors.about = "About is Required";
         }
         if (!values.nid && values.isNrb == "false") {
           errors.nid = "Nid is Required";
@@ -96,112 +110,125 @@ const MyForm: React.FC<MyFormProps> = ({
         setSubmitting(false);
       }}
     >
-      {({ values, isSubmitting }) => (
-        <Form>
-          <Grid templateColumns="repeat(12, 1fr)" gap={2}>
-            <InputField name="name" label="Name" placeholder="Name" />
-            <InputField
-              type="email"
-              name="email"
-              label="Email"
-              placeholder="Email"
-            />
+      {({ values, isSubmitting }) => {
+        console.log(values);
+        return (
+          <Form>
+            <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+              <InputField name="name" label="Name" placeholder="Name" />
+              <InputField
+                type="email"
+                name="email"
+                label="Email"
+                placeholder="Email"
+              />
 
-            <RadioButtonGroup
-              name="gender"
-              label="Gender"
-              options={[
-                { value: "male", label: "Male" },
-                { value: "female", label: "Female" },
-              ]}
-            />
-            <RadioButtonGroup
-              name="isNrb"
-              label="Is Nrb"
-              options={[
-                { value: "true", label: "Yes" },
-                { value: "false", label: "No" },
-              ]}
-              clearFields={[
-                { name: "nid", value: "true" },
-                { name: "passport", value: "false" },
-              ]}
-            />
-            <InputField
-              name="nid"
-              label="Nid"
-              placeholder="Nid"
-              isVisible={values.isNrb == "false"}
-            />
+              <RadioButtonGroup
+                name="gender"
+                label="Gender"
+                options={[
+                  { value: "male", label: "Male" },
+                  { value: "female", label: "Female" },
+                ]}
+              />
+              <DatePickerField
+                name="birthDate"
+                label="Birth Date"
+                placeholder="Birth Date"
+              />
+              <RadioButtonGroup
+                name="isNrb"
+                label="Is Nrb"
+                options={[
+                  { value: "true", label: "Yes" },
+                  { value: "false", label: "No" },
+                ]}
+                clearFields={[
+                  { name: "nid", value: "true" },
+                  { name: "passport", value: "false" },
+                ]}
+              />
+              <InputField
+                name="nid"
+                label="Nid"
+                placeholder="Nid"
+                isVisible={values.isNrb == "false"}
+              />
 
-            <InputField
-              name="passport"
-              label="Passport"
-              placeholder="Passport"
-              isVisible={values.isNrb == "true"}
-            />
+              <InputField
+                name="passport"
+                label="Passport"
+                placeholder="Passport"
+                isVisible={values.isNrb == "true"}
+              />
 
-            <Autocomplete
-              placeholder="Select Division"
-              name="divisionId"
-              label="Division"
-              options={[
-                { label: "Dhaka", value: "1" },
-                { label: "Khulna", value: "2" },
-                { label: "Rajshahi", value: "3" },
-              ]}
-              clearFields={["districtId", "thanaId"]}
-            />
+              <Autocomplete
+                placeholder="Select Division"
+                name="divisionId"
+                label="Division"
+                options={[
+                  { label: "Dhaka", value: "1" },
+                  { label: "Khulna", value: "2" },
+                  { label: "Rajshahi", value: "3" },
+                ]}
+                clearFields={["districtId", "thanaId"]}
+              />
 
-            <Autocomplete
-              placeholder="Select District"
-              name="districtId"
-              label="District"
-              options={[
-                { label: "Dhaka", value: "1" },
-                { label: "Kushtia", value: "2" },
-                { label: "Meherpur", value: "3" },
-              ]}
-              //  isLoading={values.divisionId ? true : false}
-              isDisabled={!values.divisionId}
-              clearFields={[{ name: "thanaId", value: "" }]}
-              col={6}
-            />
+              <Autocomplete
+                placeholder="Select District"
+                name="districtId"
+                label="District"
+                options={[
+                  { label: "Dhaka", value: "1" },
+                  { label: "Kushtia", value: "2" },
+                  { label: "Meherpur", value: "3" },
+                ]}
+                //  isLoading={values.divisionId ? true : false}
+                isDisabled={!values.divisionId}
+                clearFields={[{ name: "thanaId", value: "" }]}
+                col={6}
+              />
 
-            <Autocomplete
-              placeholder="Select Thana"
-              name="thanaId"
-              label="Thana"
-              options={[
-                { label: "Mirpur", value: "1" },
-                { label: "Gangni", value: "2" },
-                { label: "Meherpur Sadar", value: "3" },
-              ]}
-              isDisabled={!values.districtId}
-              col={6}
-            />
-            <Autocomplete
-              placeholder="Select Skill"
-              name="skills"
-              label="Skill"
-              options={[
-                { label: "React", value: "1" },
-                { label: "Angular", value: "2" },
-                { label: "Vue", value: "3" },
-              ]}
-              isMulti
-            />
+              <Autocomplete
+                placeholder="Select Thana"
+                name="thanaId"
+                label="Thana"
+                options={[
+                  { label: "Mirpur", value: "1" },
+                  { label: "Gangni", value: "2" },
+                  { label: "Meherpur Sadar", value: "3" },
+                ]}
+                isDisabled={!values.districtId}
+                col={6}
+              />
+              <Autocomplete
+                placeholder="Select Skill"
+                name="skills"
+                label="Skill"
+                options={[
+                  { label: "React", value: "1" },
+                  { label: "Angular", value: "2" },
+                  { label: "Vue", value: "3" },
+                ]}
+                isMulti
+              />
 
-            <InputField name="address" label="Address" placeholder="Address" />
-          </Grid>
+              <InputField
+                name="address"
+                label="Address"
+                placeholder="Address"
+              />
+              <EditorField name="about" label="About" />
+            </Grid>
 
-          <Flex justifyContent="flex-end">
-            <Button type="submit" isLoading={isSubmitting} mt={4}>
-              Submit
-            </Button>
-          </Flex>
-        </Form>
-      )}
+            <Flex justifyContent="flex-end">
+              <Button type="submit" isLoading={isSubmitting} mt={4}>
+                Submit
+              </Button>
+            </Flex>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

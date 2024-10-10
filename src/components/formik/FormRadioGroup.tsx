@@ -29,7 +29,7 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
       <Field name={name}>
         {({ field, form, meta }: FieldProps) => {
           const handleChange = (value: string) => {
-            console.log(clearFields);
+          
             clearFields.map((i) => {
               if (i.value === value) {
                 form.setFieldValue(i.name, "");
@@ -38,7 +38,7 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
             form.setFieldValue(name, value);
           };
 
-          console.log("radio field");
+         
 
           return (
             <FormControl isInvalid={!!meta.error && meta.touched}>

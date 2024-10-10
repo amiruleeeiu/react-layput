@@ -31,38 +31,13 @@ const InputField: React.FC<InputFieldProps> = ({
   isVisible = true,
   col = 12,
 }) => {
+  console.log("input field");
   return (
     <>
       {isVisible ? (
         <GridItem colSpan={{ base: 12, md: col }}>
           <Field name={name}>
-            {({ field, form, meta }: FieldProps) => {
-              const handleChange = (
-                event: React.ChangeEvent<HTMLInputElement>
-              ) => {
-                if (!event.target) {
-                  console.error("InputField: Missing event.target");
-                  return;
-                }
-
-                const { value } = event.target;
-                console.log("input field");
-
-                if (
-                  type === "number" &&
-                  (isNaN(Number(value)) || value === "")
-                ) {
-                  return;
-                }
-
-                if (!form) {
-                  console.error("InputField: Missing Formik form");
-                  return;
-                }
-
-                form.setFieldValue(name, value);
-              };
-
+            {({ field, meta }: FieldProps) => {
               return (
                 <FormControl isInvalid={!!(meta.touched && meta.error)}>
                   <FormLabel htmlFor={name}>{label}</FormLabel>
@@ -74,7 +49,6 @@ const InputField: React.FC<InputFieldProps> = ({
                     maxLength={maxLength}
                     min={min}
                     max={max}
-                    onChange={handleChange}
                     aria-describedby={`${name}-error`} // Accessibility improvement
                   />
                   <FormErrorMessage id={`${name}-error`}>

@@ -1,0 +1,36 @@
+.DayPicker {
+  border: 2px solid #e2e8f0; /* Chakra's border color */
+  border-radius: 8px;
+}
+
+.DayPicker-Day {
+  border-radius: 50%;
+}
+
+.DayPicker-Day--selected {
+  background-color: #38a169; /* Chakra's teal color */
+  color: white;
+}
+
+.DayPicker-Day--today {
+  font-weight: bold;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+  border: none;
+}
+
+.react-datepicker-wrapper input {
+  width: 100%;
+  border: 2px solid rgb(226, 223, 223);
+  outline: none;
+  border-radius: 5px;
+}
+
+.react-datepicker-wrapper input:focus {
+  width: 100%;
+  border: 2px solid #4299e1;
+  outline: none;
+  border-radius: 5px;
+}
