@@ -36,3 +36,6 @@
   border-radius: 5px;
   padding: 6px;
 }
+.tox {
+  z-index: 0;
+}

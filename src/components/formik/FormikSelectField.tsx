@@ -3,51 +3,45 @@ import {
   FormErrorMessage,
   FormLabel,
   GridItem,
+  Select,
 } from "@chakra-ui/react";
 import { Field, FieldProps } from "formik";
 import React from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { Visible } from "../../../pages/FormBuilder";
 
-type InputFieldProps = {
+type SelectFieldProps = {
   name: string;
   label: string;
   type?: "text" | "number" | "email";
   placeholder?: string;
-  maxLength?: number;
-  min?: number;
-  max?: number;
-  isVisible?: boolean | Visible;
+  options?: { label: string; value: string }[];
+  isVisible?: boolean;
   col?: number;
 };
 
-const DatePickerField: React.FC<InputFieldProps> = ({
+const FormikSelectField: React.FC<SelectFieldProps> = ({
   name,
   label,
+  options,
   isVisible = true,
   col = 12,
 }) => {
-  console.log("input field");
   return (
     <>
       {isVisible ? (
         <GridItem colSpan={{ base: 12, md: col }}>
           <Field name={name}>
-            {({ field, form, meta }: FieldProps) => {
+            {({ field, meta }: FieldProps) => {
               return (
                 <FormControl isInvalid={!!(meta.touched && meta.error)}>
                   <FormLabel htmlFor={name}>{label}</FormLabel>
-                  <DatePicker
-                    dateFormat="dd/MM/yyyy"
-                    toggleCalendarOnIconClick
-                    selected={field.value}
-                    placeholderText="Select date"
-                    isClearable
-                    onChange={(date) =>
-                      form.setFieldValue(name, date ? date.toISOString() : "")
-                    }
-                  />
+                  <Select {...field}>
+                    <option value="">Select Option</option>
+                    {options?.map((i, index) => (
+                      <option value={i.value} key={index}>
+                        {i.label}
+                      </option>
+                    ))}
+                  </Select>
                   <FormErrorMessage id={`${name}-error`}>
                     {meta.touched && meta.error}
                   </FormErrorMessage>
@@ -61,4 +55,4 @@ const DatePickerField: React.FC<InputFieldProps> = ({
   );
 };
 
-export default DatePickerField;
+export default FormikSelectField;
