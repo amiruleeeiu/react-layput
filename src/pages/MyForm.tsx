@@ -44,16 +44,6 @@ const skillOptions: Option[] = [
   { label: "Vue", value: "3" },
 ];
 
-interface ClearField {
-  name: string;
-  value: string;
-}
-
-export interface Visible {
-  name: string;
-  value: string;
-}
-
 interface Fields {
   name: string;
   type?: string;
@@ -61,14 +51,13 @@ interface Fields {
   label: string;
   options?: Option[];
   isVisible?: boolean;
-  visible?: Visible;
-  clearFields?: string[] | ClearField[];
+  clearFields?: string[];
   isMulti?: boolean;
   col?: number;
   isDisabled?: boolean;
 }
 
-const getField = (properties: Fields, values: any, index: number) => {
+const getField = (properties: Fields) => {
   const {
     type,
     name,
@@ -77,17 +66,16 @@ const getField = (properties: Fields, values: any, index: number) => {
     placeholder,
     clearFields,
     isVisible,
-    visible,
     isMulti,
     isDisabled,
     col,
   } = properties || {};
-  console.log(type, values[name]);
+  delete properties.type;
   switch (type) {
     case "autocomplete":
       return (
         <Autocomplete
-          placeholder={placeholder || label}
+          placeholder={placeholder}
           name={name}
           label={label}
           options={options || []}
@@ -95,7 +83,6 @@ const getField = (properties: Fields, values: any, index: number) => {
           isMulti={isMulti}
           isDisabled={isDisabled}
           col={col}
-          key={index}
         />
       );
     case "radio":
@@ -104,9 +91,7 @@ const getField = (properties: Fields, values: any, index: number) => {
           col={col}
           name={name}
           label={label}
-          clearFields={clearFields as { name: string; value: string }[]}
           options={options || []}
-          key={index}
         />
       );
     case "date":
@@ -117,21 +102,12 @@ const getField = (properties: Fields, values: any, index: number) => {
           label={label}
           placeholder={label}
           col={col}
-          key={index}
         />
       );
     case "editor":
-      return <EditorField {...properties} key={index} isVisible={isVisible} />;
+      return <EditorField {...properties} />;
     default:
-      return (
-        <InputField
-          {...properties}
-          placeholder={label}
-          isVisible={visible && values[visible.name] == visible?.value}
-          type="text"
-          key={index}
-        />
-      );
+      return <InputField {...properties} type="text" />;
   }
 };
 
@@ -153,45 +129,22 @@ const MyForm: React.FC<MyFormProps> = ({
     skills: [],
   },
 }) => {
-  const fields: Fields[] = [
+  const fields: Fields = [
     { name: "name", label: "Name", type: "text" },
-    { name: "email", label: "Email", type: "email" },
-    {
-      name: "gender",
-      label: "Gender",
-      type: "radio",
-      options: [
-        { value: "male", label: "Male" },
-        { value: "female", label: "Female" },
-      ],
-    },
+    { name: "email", label: "Email", type: "email", col: 6 },
+    { name: "gender", label: "Gender", type: "radio", col: 6 },
     { name: "birthDate", label: "Birth Date", type: "date" },
     {
       name: "isNrb",
       label: "Is Nrb",
       type: "radio",
-      options: [
-        { value: "true", label: "Yes" },
-        { value: "false", label: "No" },
-      ],
-
-      clearFields: [
-        { name: "nid", value: "true" },
-        { name: "passport", value: "false" },
-      ],
+      // clearFields: [
+      //   { name: "nid", value: "true" },
+      //   { name: "passport", value: "false" },
+      // ],
     },
-    {
-      name: "nid",
-      label: "NID",
-      type: "text",
-      visible: { name: "isNrb", value: "false" },
-    },
-    {
-      name: "passport",
-      label: "Passport",
-      type: "text",
-      visible: { name: "isNrb", value: "true" },
-    },
+    { name: "nid", label: "NID", type: "text" },
+    { name: "passport", label: "Passport", type: "text" },
     {
       name: "divisionId",
       label: "Select Division",
@@ -217,21 +170,19 @@ const MyForm: React.FC<MyFormProps> = ({
       label: "Select Skills",
       type: "autocomplete",
       options: skillOptions,
-      isMulti: true,
     },
     { name: "address", label: "Address", type: "text" },
-    { name: "about", label: "About", type: "editor" },
   ];
   const initialValues1 = fields.reduce((acc, field) => {
     acc[field.name] = field.value || "";
     return acc;
   }, {});
 
-  console.log(initialValues1);    
+  console.log(initialValues1);
 
   return (
     <Formik
-      initialValues={initialValues1}
+      initialValues={initialValues}
       onSubmit={(values, { setSubmitting }) => {
         console.log(values);
         if (onSubmit) {
@@ -245,7 +196,110 @@ const MyForm: React.FC<MyFormProps> = ({
         return (
           <Form>
             <Grid templateColumns="repeat(12, 1fr)" gap={2}>
-              {fields.map((field, index) => getField(field, values, index))}
+              <InputField name="name" label="Name" placeholder="Name" />
+              <InputField
+                type="email"
+                name="email"
+                label="Email"
+                placeholder="Email"
+              />
+
+              <RadioButtonGroup
+                name="gender"
+                label="Gender"
+                options={[
+                  { value: "male", label: "Male" },
+                  { value: "female", label: "Female" },
+                ]}
+              />
+              <DatePickerField
+                name="birthDate"
+                label="Birth Date"
+                placeholder="Birth Date"
+              />
+              <RadioButtonGroup
+                name="isNrb"
+                label="Is Nrb"
+                options={[
+                  { value: "true", label: "Yes" },
+                  { value: "false", label: "No" },
+                ]}
+                clearFields={[
+                  { name: "nid", value: "true" },
+                  { name: "passport", value: "false" },
+                ]}
+              />
+              <InputField
+                name="nid"
+                label="Nid"
+                placeholder="Nid"
+                isVisible={values.isNrb == "false"}
+              />
+
+              <InputField
+                name="passport"
+                label="Passport"
+                placeholder="Passport"
+                isVisible={values.isNrb == "true"}
+              />
+
+              <Autocomplete
+                placeholder="Select Division"
+                name="divisionId"
+                label="Division"
+                options={[
+                  { label: "Dhaka", value: "1" },
+                  { label: "Khulna", value: "2" },
+                  { label: "Rajshahi", value: "3" },
+                ]}
+                clearFields={["districtId", "thanaId"]}
+              />
+
+              <Autocomplete
+                placeholder="Select District"
+                name="districtId"
+                label="District"
+                options={[
+                  { label: "Dhaka", value: "1" },
+                  { label: "Kushtia", value: "2" },
+                  { label: "Meherpur", value: "3" },
+                ]}
+                //  isLoading={values.divisionId ? true : false}
+                isDisabled={!values.divisionId}
+                clearFields={[{ name: "thanaId", value: "" }]}
+                col={6}
+              />
+
+              <Autocomplete
+                placeholder="Select Thana"
+                name="thanaId"
+                label="Thana"
+                options={[
+                  { label: "Mirpur", value: "1" },
+                  { label: "Gangni", value: "2" },
+                  { label: "Meherpur Sadar", value: "3" },
+                ]}
+                isDisabled={!values.districtId}
+                col={6}
+              />
+              <Autocomplete
+                placeholder="Select Skill"
+                name="skills"
+                label="Skill"
+                options={[
+                  { label: "React", value: "1" },
+                  { label: "Angular", value: "2" },
+                  { label: "Vue", value: "3" },
+                ]}
+                isMulti
+              />
+
+              <InputField
+                name="address"
+                label="Address"
+                placeholder="Address"
+              />
+              <EditorField name="about" label="About" />
             </Grid>
 
             <Flex justifyContent="flex-end">

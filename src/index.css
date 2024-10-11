@@ -26,6 +26,7 @@
   border: 2px solid rgb(226, 223, 223);
   outline: none;
   border-radius: 5px;
+  padding: 6px;
 }
 
 .react-datepicker-wrapper input:focus {
@@ -33,4 +34,5 @@
   border: 2px solid #4299e1;
   outline: none;
   border-radius: 5px;
+  padding: 6px;
 }

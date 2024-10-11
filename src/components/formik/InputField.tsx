@@ -32,6 +32,7 @@ const InputField: React.FC<InputFieldProps> = ({
   col = 12,
 }) => {
   console.log("input field");
+
   return (
     <>
       {isVisible ? (

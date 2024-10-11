@@ -8,6 +8,7 @@ import { Field, FieldProps } from "formik";
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Visible } from "../../../pages/FormBuilder";
 
 type InputFieldProps = {
   name: string;
@@ -17,7 +18,7 @@ type InputFieldProps = {
   maxLength?: number;
   min?: number;
   max?: number;
-  isVisible?: boolean;
+  isVisible?: boolean | Visible;
   col?: number;
 };
 
@@ -39,7 +40,6 @@ const DatePickerField: React.FC<InputFieldProps> = ({
                   <FormLabel htmlFor={name}>{label}</FormLabel>
                   <DatePicker
                     dateFormat="dd/MM/yyyy"
-                    showIcon
                     toggleCalendarOnIconClick
                     selected={field.value}
                     placeholderText="Select date"

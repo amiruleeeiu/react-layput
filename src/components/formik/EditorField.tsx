@@ -10,12 +10,13 @@ import {
 import { Editor } from "@tinymce/tinymce-react";
 import { Field, FieldProps } from "formik";
 import React, { useState } from "react";
+import { Visible } from "../../pages/FormBuilder";
 
 type EditorFieldProps = {
   name: string;
   label: string;
   placeholder?: string;
-  isVisible?: boolean;
+  isVisible?: Visible | boolean;
   disabled?: boolean;
   col?: number;
 };
