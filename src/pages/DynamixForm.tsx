@@ -91,7 +91,6 @@ const getField = (
     dependency,
     col,
   } = properties || {};
-  console.log(type, values[name]);
 
   const getAutocompleteOptions = () => {
     if (dependency && values[dependency] && options?.length) {
@@ -113,7 +112,7 @@ const getField = (
           name={name}
           label={label}
           options={getAutocompleteOptions()}
-          clearFields={clearFields}
+          clearFields={clearFields as string[]}
           isMulti={isMulti}
           isDisabled={isDisabled}
           col={col}
@@ -168,7 +167,7 @@ const getField = (
   }
 };
 
-const MyForm: React.FC<MyFormProps> = ({
+const DynamicForm: React.FC<MyFormProps> = ({
   fields = [
     { name: "name", label: "Name", type: "text" },
     { name: "email", label: "Email", type: "email" },
@@ -241,13 +240,13 @@ const MyForm: React.FC<MyFormProps> = ({
       options: options,
     },
     { name: "address", label: "Address", type: "text" },
-    {
-      name: "skills",
-      label: "Select Skills",
-      type: "autocomplete",
-      options: skillOptions,
-      isMulti: true,
-    },
+    // {
+    //   name: "skills",
+    //   label: "Select Skills",
+    //   type: "autocomplete",
+    //   options: skillOptions,
+    //   isMulti: true,
+    // },
     { name: "about", label: "About", type: "editor" },
   ],
 }) => {
@@ -276,10 +275,6 @@ const MyForm: React.FC<MyFormProps> = ({
             .refine((val) => val !== "", { message: "This field is required" });
           break;
 
-        case "birthDate":
-          shape[key] = z.string().min(1, { message: "This field is required" });
-          break;
-
         // case "gender":
         //   shape[key] = z
         //     .enum(["male", "female", "other"], {
@@ -301,14 +296,13 @@ const MyForm: React.FC<MyFormProps> = ({
   // Generate the dynamic Zod schema
   const dynamicSchema = createDynamicSchema(initialValues);
 
-  console.log(dynamicSchema);
-
   return (
     <Formik
       initialValues={initialValues}
       validate={(values) => {
         try {
-          dynamicSchema.parse(values); // Validate using Zod schema
+          dynamicSchema.parse(values);
+          console.log(values); // Validate using Zod schema
           return {}; // Return empty object if no errors
         } catch (err) {
           // Return validation errors in a format compatible with Formik
@@ -327,9 +321,10 @@ const MyForm: React.FC<MyFormProps> = ({
         setSubmitting(false);
       }}
     >
-      {({ values, errors, isSubmitting }) => {
+      {({ values, errors, touched, isSubmitting }) => {
         console.log(values);
         console.log(errors);
+        console.log(touched);
         return (
           <Form>
             <Grid templateColumns="repeat(12, 1fr)" gap={2}>
@@ -348,4 +343,4 @@ const MyForm: React.FC<MyFormProps> = ({
   );
 };
 
-export default MyForm;
+export default DynamicForm;

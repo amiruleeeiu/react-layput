@@ -31,7 +31,7 @@ const InputField: React.FC<InputFieldProps> = ({
   isVisible = true,
   col = 12,
 }) => {
-  console.log("input field");
+ 
 
   return (
     <>

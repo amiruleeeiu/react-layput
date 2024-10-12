@@ -28,7 +28,7 @@ const EditorField: React.FC<EditorFieldProps> = ({
   isVisible = true,
   col = 12,
 }) => {
-  console.log("input field");
+ 
   const [isLoading, setIsLoading] = useState(true);
   return (
     <>

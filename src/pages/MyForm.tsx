@@ -178,13 +178,24 @@ const MyForm: React.FC<MyFormProps> = ({
     return acc;
   }, {});
 
-  console.log(initialValues1);
-
   return (
     <Formik
       initialValues={initialValues}
+      validate={(values) => {
+        const errors = {};
+
+        if (!values.divisionId) {
+          errors.divisionId = "This Field is required";
+        }
+        if (!values.districtId) {
+          errors.districtId = "This Field is required";
+        }
+        if (!values.thanaId) {
+          errors.thanaId = "This Field is required";
+        }
+        return errors;
+      }}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
         if (onSubmit) {
           onSubmit(values);
         }
@@ -192,7 +203,7 @@ const MyForm: React.FC<MyFormProps> = ({
       }}
     >
       {({ values, isSubmitting }) => {
-        console.log(values);
+        // console.log(values);
         return (
           <Form>
             <Grid templateColumns="repeat(12, 1fr)" gap={2}>

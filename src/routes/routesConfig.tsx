@@ -1,6 +1,7 @@
 import DataTable from "../pages/DataTable";
-import FormBuilder from "../pages/FormBuilder";
+import DynamicForm from "../pages/DynamixForm";
 import InputPage from "../pages/InputPage";
+import MyForm from "../pages/MyForm";
 import TinymceEditor from "../pages/TinymceEditor";
 import Unauthorized from "../pages/Unauthorized";
 import { RouteWithRole } from "./transformRoutesWithRole";
@@ -13,7 +14,12 @@ export const routesConfig: RouteWithRole[] = [
   },
   {
     path: "/form",
-    element: <FormBuilder />,
+    element: <MyForm />,
+    roles: ["user", "admin"],
+  },
+  {
+    path: "/dynamic-form",
+    element: <DynamicForm />,
     roles: ["user", "admin"],
   },
   {

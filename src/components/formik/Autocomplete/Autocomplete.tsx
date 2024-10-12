@@ -11,7 +11,7 @@ export interface AutocompleteProps {
   name: string;
   label: string;
   options: { value: string; label: string }[];
-  clearFields?: { name: string; value: string }[] | string[];
+  clearFields?: string[];
   isDisabled?: boolean;
   isVisible?: boolean;
   placeholder?: string;
@@ -37,23 +37,22 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
       {isVisible && (
         <Field name={name}>
           {({ field, form, meta }: FieldProps) => {
-            const clearFieldsFn = () => {
-              clearFields.forEach((fieldToClear) => {
-                const fieldProps = form.getFieldProps(
-                  typeof fieldToClear === "string"
-                    ? fieldToClear
-                    : fieldToClear.name
-                );
-                if (fieldProps) {
-                  form.setFieldValue(fieldProps.name, "");
+            const clearFieldsFn = async () => {
+              await clearFields.forEach((fieldToClear) => {
+                console.log(fieldToClear);
+                if (fieldToClear) {
+                  form.setFieldValue(fieldToClear, "");
                 }
               });
+              form.validateForm();
             };
+
             const handleSelectChange = (
               selectedOption:
                 | MultiValue<{ value: string; label: string } | undefined>
                 | SingleValue<{ value: string; label: string } | undefined>
             ) => {
+              clearFieldsFn();
               if (selectedOption) {
                 if (Array.isArray(selectedOption)) {
                   // multi select case
@@ -64,10 +63,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 } else if (selectedOption && "value" in selectedOption) {
                   // single select case
                   form.setFieldValue(name, selectedOption.value);
-                  clearFieldsFn();
                 }
               } else {
-                clearFieldsFn();
                 if (isMulti) {
                   form.setFieldValue(name, []);
                 } else {
@@ -75,8 +72,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
                 }
               }
             };
-
-            console.log("autocomplete");
 
             return (
               <FormControl isInvalid={!!meta.error && meta.touched}>

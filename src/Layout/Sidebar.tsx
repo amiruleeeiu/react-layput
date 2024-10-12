@@ -11,6 +11,7 @@ function Sidebar() {
     { path: "/", text: "Dashboard", icon: MdDashboard },
     { path: "/routing", text: "Routing", icon: CgProductHunt },
     { path: "/form", text: "Form", icon: CgProductHunt },
+    { path: "/dynamic-form", text: "Dynamic Form", icon: CgProductHunt },
     { path: "/table", text: "Table", icon: BiMessage },
     { path: "/input", text: "Input", icon: CalendarIcon },
     { path: "/tinymce", text: "Tinymce", icon: GrOrderedList },
